@@ -1,0 +1,32 @@
+<template>
+    <div class="container  foot">
+        <p>Manage your account settings and set e-mail preferences.</p>
+    </div>
+</template>
+
+
+<!--  -->
+<script>
+const page = "Footer"
+
+export default {
+    name: page,
+    props:[],
+    data(){
+        return {
+            msg: page
+        }
+    } // data()
+}
+</script>
+
+
+<!--  -->
+<style lang="css">
+    .foot{
+        background: #333;
+        color:#fff;
+        padding: 1.5%;
+        text-align: center;
+    }
+</style>
