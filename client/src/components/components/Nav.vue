@@ -4,7 +4,10 @@
         <div id="navi" class="sixteen wide column " v-bind:class="[bg=='true'?'naviTransfer':'']">
 
                 <h1 id="logo" class="three wide column" >
-                    <router-link :to="{ path: '/', params: {} }"><a>Acplearn</a></router-link>
+                    <!-- <router-link :to="{ path: '/', params: {} }"><a>Acplearn</a></router-link> -->
+                    <router-link :to="{ path: '/', params: {} }">
+                        <img src="../../assets/acplearn_logo_white.png" width="115" style="" alt="">
+                    </router-link>
                 </h1>
 
 
@@ -12,32 +15,23 @@
             <ul class="rightMenu right menu">
 
                 <!-- 메인메뉴 -->
-                <li>
-                    <router-link :to="{ path: '/lectures', params: {} }"><a><b>APL강의관리</b></a></router-link>
-                </li>
-                <li>
-                    <router-link :to="{ path: '/service', params: {} }"><a>서비스소개</a></router-link>
-                </li>
-                <li>
-                    <router-link :to="{ path: '/notices', params: {} }"><a>공지사항</a></router-link>
-                </li>
-                <li>
-                    <router-link :to="{ path: '/apl/application', params: {} }"><a>수강신청</a></router-link>
-                </li>
-                <li>
-                    <router-link :to="{ path: '/guide', params: {} }"><a>이용안내</a></router-link>
-                </li>
+
+                    <router-link tag="li" :to="{ path: '/lectures/processes', params: {} }">APL강의관리 <i class="sign in icon"></i></router-link>&nbsp;
+                    <router-link tag="li" :to="{ path: '/service', params: {} }">서비스소개</router-link>
+                    <router-link tag="li" :to="{ path: '/notices', params: {} }">공지사항</router-link>
+                    <router-link tag="li" :to="{ path: '/apl/application', params: {} }">수강신청</router-link>
+                    <router-link tag="li" :to="{ path: '/guide', params: {} }">이용안내</router-link>
+                    <router-link tag="li" :to="{ path: '/login' }">로그인</router-link>
 
                 <!-- 드롭다운(내정보) -->
-                <li>
-                    <!-- <a href="#" class="ui dropdown"><i class="user circle icon"></i><i class="dropdown icon"></i> -->
+                <!-- <li>
                     <a href="#" class="ui dropdown">내정보<i class="dropdown icon"></i>
                     <div class="menu">
                         <div class="item">내정보수정</div>
                         <div class="item" onclick="move('/users/logout')">로그아웃</div>
                       </div>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
 
@@ -70,7 +64,7 @@ export default {
         background: #3b485f;
         color:#fff;
         /*height: 72px;*/
-        padding: 5px 20px;
+        padding: 8px 30px 0px 30px;
         /*padding: 15px 25px 10px 25px;*/
     }
     .naviTransfer{
@@ -79,24 +73,32 @@ export default {
         #logo{
             display: inline-block;
             width: 150px;
-            margin-top:4px;
+            margin-top:7px;
             padding:0;
         }
         .rightMenu{
             position: absolute;
             display: inline-block;
-            right:20px;
+            right:30px;
         }
         .rightMenu li{
             display: inline-block;
             margin-left: 20px;
             cursor: pointer;
         }
-        .rightMenu li a, #logo  a{ color:#fff;  }
-        .rightMenu li a:link{ color:#fff;  }
-        .rightMenu li a:active{ color:#fff;  }
-        .rightMenu li a:visited{ color:#fff;  }
-        .rightMenu li a:hover{ color:#BCE55C; text-decoration: underline;}
+        .rightMenu li , #logo  a{ color:#fff;  }
+        .rightMenu li:link{ color:#fff;  }
+        .rightMenu li:active{ color:#fff;  }
+        .rightMenu li:visited{ color:#fff;  }
+        .rightMenu li:hover{ color:#BCE55C; text-decoration: underline;}
+
+        li.router-link-active i,
+        li.router-link-active{
+            color:#BCE55C !important;
+            text-decoration: underline;
+        }
+
+
 
     #logo{
         cursor: pointer;

@@ -18,20 +18,11 @@
         <hr> -->
 
 
-        <!-- <div class="ui grid" style="margin:0; padding:0;">
-            <div class="two wide column" style="padding:0;">
-            <side-navi  />
-            </div>
-            <div class="fourteen wide column centered" style="background:#f1f1f1; ">
-                <router-view/>
-            </div>
-        </div> -->
-
 
         <div class="ui grid" style="padding:0; margin:0;">
             <side-navi  />
-            <div class="fourteen wide column" >
-                <h1>asd</h1>
+            <div class="thirteen wide column centered" >
+                <router-view/>
             </div>
         </div>
 

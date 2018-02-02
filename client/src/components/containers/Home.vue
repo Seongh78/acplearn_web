@@ -5,7 +5,7 @@
             <nav-bar bg="true"/>
             <br>
             <br>
-            <page-title mainTitle="Acplearn으로 프리미엄 강사가 되어보세요" subTitle="">
+            <page-title mainTitle='"Acplearn"으로 프리미엄 강사가 되어보세요' subTitle="">
                 <br>
                 <br>
                 <div class="form">

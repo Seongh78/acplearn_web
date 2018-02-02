@@ -1,7 +1,233 @@
 <template>
     <div class="">
 
-        <h1>{{msg}}</h1>
+        <!-- 페이지제목 -->
+        <div class="cardbox" style="margin:10px 0; padding:25px; ">
+            <h2>수강생</h2>
+        </div>
+
+        <!--  -->
+        <div class="cardbox" style="margin:10px 0; padding:25px;">
+
+            <h3>참여기업</h3>
+
+            <div class="ui top secondary  menu">
+                <!-- 전체 기업/수강생 현황 -->
+                <a class="item" v-bind:class="[thisTab=='f01'?'active':'']" v-on:click.prevent="selectTab('f01')">전체</a>
+
+                <!-- 기업목록/동적으로 표시 -->
+                <a class="item"
+                     v-for="company in companies"
+                     v-bind:class="[thisTab==company.company_code?'active':'']"
+                     v-on:click.prevent="selectTab(company.company_code)">
+
+                     {{ company.company_name }}
+                 </a>
+
+                <!-- 기업추가버튼 -->
+                <a class="item"  ><button type="button" class="ui primary button" @click="showModal = true">기업추가</button>  </a>
+            </div>
+
+
+            <!-- 탭 01 - 전체기업 -->
+        <div class="ui bottom tab " v-bind:class="[thisTab=='f01'?'active':'']" >
+            <table class="ui celled table">
+                <colgroup>
+                    <col width="10%;"><col >
+                    <col width="10%;"><col >
+                    <col width="10%;"><col >
+                </colgroup>
+                <tbody v-if="companies!=''">
+                    <tr>
+                        <th colspan="6">참여기업 현황</th>
+                    </tr>
+                    <tr>
+                        <th class="borderTop"><b>업체 수</b></th>
+                        <td>{{ companies.length }}개 업체</td>
+                        <th class="borderTop"><b>수강인원</b></th>
+                        <td>150명</td>
+                        <th class="borderTop"><b>비고</b></th>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <th colspan="6">등록된 업체가 없습니다.</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- 탭 01 - 전체기업 -->
+
+        <!-- 탭 02 - 기업목록 -->
+        <div class="ui bottom tab" v-for="company in companies"  v-bind:class="[thisTab==company.company_code ? 'active':'']" >
+            <table class="ui celled table">
+                <colgroup>
+                    <col width="10%;">
+                    <col >
+                    <col width="10%;">
+                    <col >
+                    <col width="10%;">
+                    <col >
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th class="">기업명</th>
+                        <td colspan="5">{{ company.company_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="borderTop">업종</th>
+                        <td colspan="">{{ company.company_category }}</td>
+                        <th class="borderTop">주소</th>
+                        <td colspan="3">{{ company.company_location }}</td>
+                    </tr>
+                    <tr>
+                        <th class="borderTop">담당자</th>
+                        <td >{{ company.company_managerName }}</td>
+                        <th class="borderTop">연락처</th>
+                        <td >{{ company.company_managerPhone }}</td>
+                        <th class="borderTop">수강인원</th>
+                        <td>45명</td>
+                    </tr>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- 탭 02 - 기업목록 -->
+
+
+
+        </div>
+        <!--  -->
+
+        <div class="cardbox" style="margin:0; padding:25px;">
+
+        <h3>수강생 <small>총 150명</small></h3>
+        <search-form/>
+
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>소속</th>
+                    <th>부서</th>
+                    <th class="center aligned">직급</th>
+                    <th class="center aligned">이름</th>
+                    <th class="center aligned">연락처</th>
+                    <th class="center aligned">생년월일</th>
+                    <th class="center aligned">성별</th>
+                </tr>
+            </thead>
+            <tbody v-if="students !='' ">
+                <tr v-for="std in students">
+                    <td>{{ std.company }}</td>
+                    <td>{{ std.department }}</td>
+                    <td class="center aligned">{{ std.position }}</td>
+                    <td class="center aligned">{{ std.name }}</td>
+                    <td class="center aligned">-</td>
+                    <td class="center aligned">-</td>
+                    <td class="center aligned">{{ std.gender }}</td>
+                </tr>
+            </tbody>
+            <tbody v-else>
+                <tr>
+                    <td colspan="7">등록된 수강생이 없습니다.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <!-- 페이지 하단 -->
+        <div class="ui two column centered grid">
+            <div class="ui centered pagination menu">
+                <a class="icon item"><i class="left chevron icon"></i></a>
+                <a class="item">1</a>
+                <a class="item">2</a>
+                <a class="item">3</a>
+                <a class="item">4</a>
+                <a class="icon item"><i class="right chevron icon"></i></a>
+            </div>
+
+            <label for="studentsFile" href="/lectures/new/summary">
+            <div class="ui  animated button" tabindex="0" style="position:absolute; right:45px; height:40px; background:#4374D9; color: #fff;">
+                <div class="visible content ">수강생 등록</div>
+                <div class="hidden content"><i class="upload icon"></i></div>
+            </div>
+            </label>
+            <input type="file" id="studentsFile" @change="onFileChange" style="display:none;">
+        </div>
+        <!-- 페이지 하단 -->
+
+
+        <br>
+        <br>
+
+
+
+        </div>
+
+        <div class="cardbox" style="margin:10px 0; padding:25px; text-align:center;">
+            <button class="ui button" @click.prevent="pStudents">저장</button>
+            <button class="ui primary button" onclick="move('/lectures/new/team')">다음페이지</button>
+        </div>
+
+
+
+    <modal v-if="showModal" @close="showModal = false" w="w-50" h="h-50">
+        <h3 slot="header">기업등록</h3>
+        <div slot="body">
+
+            <div class="ui top attached tabular  menu">
+                <a class="item" v-bind:class="[thisTab2=='t01'?'active':'']" v-on:click.prevent="selectTab2('t01')" >
+                    신규기업등록
+                </a>
+                <a class="item" v-bind:class="[thisTab2=='t02'?'active':'']" v-on:click.prevent="selectTab2('t02')" >
+                    기업검색
+                </a>
+            </div>
+
+            <!-- 신규기업등록 폼 -->
+            <div class="ui bottom attached segment tab " v-bind:class="[thisTab2=='t01'?'active':'']" >
+                <br>
+                <form class="ui form">
+                    <div class="field">
+                        <label>사업자번호</label>
+                        <input type="text" placeholder="사업자번호를 입력해 주세요" style="width:100%;" v-model="newCompany.company_code">
+                    </div>
+                    <div class="field">
+                        <label>기업명</label>
+                        <input type="text" placeholder="기업명을 입력해 주세요" style="width:100%;" v-model="newCompany.company_name">
+                    </div>
+                    <div class="field">
+                        <label>주소</label>
+                        <input type="text" placeholder="주소를 입력해 주세요" style="width:100%;" v-model="newCompany.company_location">
+                    </div>
+                    <div class="field">
+                        <label>업종</label>
+                        <input type="text" placeholder="업종을 입력해 주세요" style="width:100%;" v-model="newCompany.company_category">
+                    </div>
+                    <div class="field">
+                        <label>담당자</label>
+                        <input type="text" placeholder="이름을 입력해 주세요" style="width:100%;" v-model="newCompany.company_managerName">
+                    </div>
+                    <div class="field">
+                        <label>연락처</label>
+                        <input type="text" placeholder="ex) 010-0000-0000" style="width:100%;" v-model="newCompany.company_managerPhone">
+                    </div>
+
+                </form>
+                <br>
+            </div>
+
+        </div>
+        <div slot="footer">
+            <div class="ui two bottom attached buttons">
+                <div class="ui button" @click="showModal=false">닫기</div>
+                <div class="ui button blue" @click="insertCompany">등록</div>
+            </div>
+        </div>
+    </modal>
+
 
     </div>
 </template>
@@ -10,15 +236,208 @@
 
 <!-- Script -->
 <script>
+import { Modal, SearchForm } from '../../components'
+
 const page = 'NewStudent';
 
 export default {
     name: page,
+
+    components: {
+        'modal' : Modal,
+        'search-form' : SearchForm
+    },
+
     data () {
         return {
-            msg: page
-        }
-    }
+            showModal: false,
+            thisTab:'f01', //탭
+            thisTab2:'t01', //탭
+            attachment:{name:null, file:null}, //업로드 엑셀파일
+            selectSheet:0, // 업로드시트 선택
+            students:[], // 수강생목록
+            companies:[], // 업체목록
+            newCompany: { // 신규업체
+                company_code : '',
+                company_name : '(주)아카스타',
+                company_location : '부산광역시 남구 수영로 221 메디타워',
+                company_managerName : '박길동',
+                company_managerPosition : '팀장',
+                company_managerPhone: '010-2322-4004',
+                company_category : '교육'
+            },
+            thisCompany:'', //업체선택
+            errors: []
+        } // return
+    }, // data
+
+    methods: {
+        // 탭메뉴선택
+        selectTab(s) {
+            this.thisTab=s;
+        },
+        selectTab2(s) {
+            this.thisTab2=s;
+        },
+
+        // 모달
+        modal(cls) {
+            let fuc;
+            let options;
+
+            // 모달별 컨트롤러 설정
+            switch (cls) {
+                case 'insertCompany':
+                    options = this.insertCompany;
+                    break;
+
+                default:
+
+            }
+            onModal(cls, options);
+        },// modal()
+
+
+
+        insertCompany(){
+            this.companies.push(this.newCompany);
+            this.newCompany =  { // 입력 후 초기화
+                company_code : '',
+                company_name : '(주)아카스타',
+                company_location : '부산광역시 남구 수영로 221 메디타워',
+                company_managerName : '박길동',
+                company_managerPosition : '팀장',
+                company_managerPhone: '010-2322-4004',
+                company_category : '교육'
+            };
+            console.log(this.companies);
+            console.log(this.newCompany);
+            alert('업체가 추가되었습니다.');
+            this.showModal=false;
+            return true;
+        },
+
+        // 엑셀파일 변환
+        onFileChange(){
+            // console.log(this.companies);
+            if (this.companies == '') {
+                alert("업체 선택 후 수강생 등록이 가능합니다.");
+                //파일 초기화시켜야함
+                return;
+            }
+            var form = new FormData();
+            this.attachment.file = event.target.files[0];
+            form.append('name', this.attachment.name);
+            form.append('file', this.attachment.file);
+
+            //서버에서 변환
+            this.$http.post('/api/lectures/xlsToJson/'+this.selectSheet, form).then(resp=>{
+                // 확장자 필터링
+                if(resp.status !== 200){
+                    alert("엑셀파일만 선택 가능합니다.");
+                    return;
+                }
+                // this.students = resp.data.data.obj.data;
+
+
+                var xlsStduents = resp.data.data.obj.data;
+                var student;
+
+                // 필드배열번지 저장
+                var companyAddr         =-1,
+                      departmentAddr     =-1,
+                      positionAddr           =-1,
+                      nameAddr               =-1,
+                      birthdayAddr           =-1,
+                      genderAddr             =-1;
+
+                // 필드/리스트 여부 확인
+                var arrCheck;
+                var stdLength = this.students.length;
+
+                // 엑셀데이터 파싱
+                xlsStduents.forEach((arr, arrIndex)=>{
+                    // 수강생데이터 push
+                    if (student) {
+                        if (student.name) {
+                            this.students.push(student);
+                        }
+                    }
+                    student={};
+                    arr.forEach((std, stdIndex)=>{
+
+                        switch (std) {
+                            case '소속':
+                            case '업체':
+                            case '업체명':
+                            case '회사':
+                            case '회사명':
+                                companyAddr = stdIndex;
+                                break;
+
+                            case '부서':
+                            case '부서명':
+                            case '팀':
+                            case '팀명':
+                                departmentAddr = stdIndex;
+                                break;
+
+                            case '직급':
+                            case '직함':
+                            case '직위':
+                                positionAddr = stdIndex;
+                                break;
+
+                            case '성':
+                            case '성별':
+                                genderAddr = stdIndex;
+                                break;
+
+                            case '이름':
+                            case '이름명':
+                            case '성함':
+                            case '성명':
+                                nameAddr = stdIndex;
+                                break;
+
+                            default:
+                                 if( companyAddr      ==stdIndex ||
+                                     departmentAddr  ==stdIndex ||
+                                      positionAddr        ==stdIndex ||
+                                      genderAddr          ==stdIndex ||
+                                      nameAddr            ==stdIndex ){
+
+                                          switch(stdIndex){
+                                            case companyAddr:
+                                                student.company = std;
+                                            break;
+                                            case departmentAddr:
+                                                student.department = std;
+                                            break;
+                                            case positionAddr:
+                                                student.position = std;
+                                            break;
+                                            case genderAddr:
+                                                student.gender = std;
+                                            break;
+                                            case nameAddr:
+                                                student.name = std;
+                                            break;
+                                      }
+
+                                     }
+                        }//switch
+
+
+                    });
+
+                }); //forEach()
+
+            });//$http
+
+        } // onFileChange()
+
+    }//method
 }
 </script>
 
@@ -29,4 +448,15 @@ export default {
     a {
         color: #42b983;
     }
+
+    th{
+            background: #F9FAFB;
+            padding:0.92857143em 0.78571429em;
+        }
+        .borderBottom{
+            border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+        }
+        .borderTop{
+            border-top: 1px solid rgba(34, 36, 38, 0.1);
+        }
 </style>

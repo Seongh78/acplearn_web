@@ -14,13 +14,16 @@
         <h1>MainContainer</h1>
 
 
-
+        <foot-bar/>
     </div>
 </template>
 
 <script>
+import  {Footer}  from '@/components/components'
+
 export default {
     name: 'MainContainer',
+    components: { "foot-bar":Footer },
     data () {
         return {
           msg: 'MainContainer'

@@ -10,18 +10,43 @@
             </div>
             <br>
         </div>
+
+
+
+        <!-- Menu Test -->
+        <!-- <div class="item" v-for="menu in menus">
+            {{ menu.title }}
+            <div class="menu" v-if="menu.submenus">
+                <hr style="opacity:0.07;">
+                <router-link :to="{ path: '/lectures/processes', query: {aa:1} }" v-for="submenu in menu.submenus">
+                    <a class="item" v-bind:class="thisMenu==submenu.id?'active':'' " >- {{ submenu.title }}</a>
+                </router-link>
+            </div>
+        </div> -->
+
+
+
+
         <div class="item">
             강의현황 <i class="calendar outline icon"></i>
-            <hr style="opacity:0.1;">
+            <!-- <hr style="opacity:0.07;"> -->
             <div class="menu">
-                <a class="active item">진행강의</a>
-                <a class="item">승인대기강의</a>
-                <a class="item">개설대기강의</a>
+                <router-link class="item" tag="a" :to="{ name:'lectures_processes'}">- 진행강의</router-link>
+                <router-link class="item" tag="a" :to="{ name: 'lectures_wait'}">- 승인대기강의</router-link>
+                <router-link class="item" tag="a" :to="{ name: 'lectures_cwait'}">- 개설대기강의</router-link>
             </div>
         </div>
-        <a class="item">강의템플릿 관리 <i class="clone icon"></i></a>
-        <a class="item">기업관리 <i class="users icon"></i></a>
-        <a class="item">통계 <i class="bar chart icon"></i> </a>
+        <router-link class="item" tag="a" :to="{ path : '/templates'}">
+            강의템플릿 관리 <i class="clone icon"></i>
+        </router-link>
+        <router-link class="item" tag="a" :to="{ path : '/companies'}">
+            기업관리 <i class="users icon"></i>
+        </router-link>
+        <router-link class="item" tag="a" :to="{ path : '/lectures/lectures_processes'}">
+            통계 <i class="bar chart icon"></i></i>
+        </router-link>
+
+
         <div class="ui dropdown item">
             환경설정
             <i class="options icon"></i>
@@ -43,27 +68,55 @@ export default {
 
     props: ['aaa'],
 
-    mounted(){
-        // alert(this.bg)
+    created(){
+    },
+
+    updated(){
+            // alert(1)
     },
 
     data () {
         return {
             msg: 'NavBar',
+            thisMenu:'lectures_processes',
             menus: [
                 {
-                    mid: 'lectures',
+                    id: 'lectures',
                     title: '강의현황',
                     submenus: [
                         {
-                            sid:'progress',
+                            id: 'progresses',
                             title: '진행강의'
+                        },
+                        {
+                            id: 'wait',
+                            title: '승인대기 강의'
+                        },
+                        {
+                            id: 'create',
+                            title: '개설대기 강의'
                         }
                     ]
+                },
+                {
+                    id: 'templates',
+                    title: '강의템플릿 관리',
+
                 }
             ]//menus
         }
-    }//data
+    }, //data
+
+
+
+    methods:{
+
+        onRouter(){
+            this.thisMenu = this.$route.name;
+            console.log(this.thisMenu);
+        }
+
+    } //methods
 }
 </script>
 
@@ -92,5 +145,26 @@ export default {
     .aaa{
         background: red;
     }
+
+    .active{
+        text-decoration: underline !important;
+    }
+
+    .item,  .item a{
+        color:#353535 !important;
+        font-size: 0.95em;
+    }
+
+
+
+
+    .menu .router-link-active {
+      font-weight: bold;
+      color:#4374D9;
+      background: #f1f1f1 !important;
+    }
+
+
+
 
 </style>

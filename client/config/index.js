@@ -5,45 +5,44 @@
 const path = require('path')
 
 module.exports = {
-    entry: './src/index.js',
-  dev: {
+    // entry: './src/index.js',
+    dev: {
+        // Paths
+        proxyTable: {
+            '/api': {
+                target: 'http://localhost:3000/api',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+              }
+        },
+        assetsSubDirectory: 'static',
+        assetsPublicPath: '/',
 
-    // Paths
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-    proxyTable: {
-        '/api': {
-            target: 'http://localhost:3000/api',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/api': ''
-            }
-          }
+        // Various Dev Server settings
+        host: 'localhost',
+        port: 8080,
+        autoOpenBrowser: false,
+        errorOverlay: true,
+        notifyOnErrors: true,
+        poll: false,
+
+
+        /**
+         * Source Maps
+         */
+
+        // https://webpack.js.org/configuration/devtool/#development
+        devtool: 'cheap-module-eval-source-map',
+
+        // If you have problems debugging vue-files in devtools,
+        // set this to false - it *may* help
+        // https://vue-loader.vuejs.org/en/options.html#cachebusting
+        cacheBusting: true,
+
+        cssSourceMap: true
     },
-
-    // Various Dev Server settings
-    host: 'localhost',
-    port: 8080,
-    autoOpenBrowser: false,
-    errorOverlay: true,
-    notifyOnErrors: true,
-    poll: false,
-
-
-    /**
-     * Source Maps
-     */
-
-    // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-module-eval-source-map',
-
-    // If you have problems debugging vue-files in devtools,
-    // set this to false - it *may* help
-    // https://vue-loader.vuejs.org/en/options.html#cachebusting
-    cacheBusting: true,
-
-    cssSourceMap: true
-  },
 
   build: {
     // Template for index.html

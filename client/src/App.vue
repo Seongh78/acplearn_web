@@ -1,15 +1,15 @@
 <template>
     <div id="app " class="">
         <router-view/>
-        <foot-bar/>
+
     </div>
 </template>
 
 <script>
-    import  {Footer}  from '@/components/components'
+    // import  {Footer}  from '@/components/components'
     export default {
         name: 'App',
-        components: { "foot-bar":Footer }
+        // components: { "foot-bar":Footer }
     }
 </script>
 
@@ -20,6 +20,7 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
+        height: 100%;
     }
 
     .container-limit{

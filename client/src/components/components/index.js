@@ -9,6 +9,7 @@ import PageTitle from './PageTitle'
 import PageLayout from './PageLayout'
 import SideNavi from './SideNavi'
 import Tab from './Tab'
+import SearchForm from './SearchForm'
 
 
 export {
@@ -22,5 +23,6 @@ export {
     PageTitle,
     PageLayout,
     SideNavi,
-    Tab
+    Tab,
+    SearchForm
 }
