@@ -3,11 +3,18 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 
-
-
-  // Vue.use(SemanticUIVue);
+// Axios
 Vue.prototype.$http = axios;
-Vue.config.productionTip = false
+
+// 라우터
+Vue.prototype.$ro = router;
+
+// BACKEND_URL
+Vue.prototype.$backend = process.env.BACKEND_URL;
+Vue.config.productionTip = true
+
+// EventBus 사용
+Vue.prototype.$EventBus = new Vue();
 
 
 /* eslint-disable no-new */

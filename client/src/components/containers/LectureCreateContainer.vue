@@ -1,5 +1,5 @@
 <template>
-    <div class="hash">
+    <div class="hash" >
         <!-- Navbar -->
         <top-layout bg="">
             <nav-bar bg=""/>
@@ -14,7 +14,13 @@
 
                 <div class="ui ordered steps" style="width:100%; ">
 
-                    <router-link
+                    <div v-for="step in steps" :key="step.sub" class="step" v-bind:class="((step.sub == selector) ? 'active' : '')" style="cursor:pointer;" @click.prevent="onChangeStep(step.sub)">
+                        <div class="content">
+                            <div class="title">{{step.title}}</div>
+                            <div class="description">{{ step.sub }}</div>
+                        </div>
+                    </div>
+                    <!-- <router-link
                         tag="div"
                         v-for="step in steps"
                         :key="step.sub"
@@ -23,17 +29,16 @@
                         style="cursor:pointer;"
                         :to="'/lectures/new/'+step.sub"
                         @click.native="onChangeStep(step.sub)">
-                    <!-- <div class="step" style="cursor:pointer;" v-for="step in steps"> -->
                         <div class="content">
                             <div class="title">{{step.title}}</div>
                             <div class="description">{{ step.sub }}</div>
                         </div>
-                    <!-- </div> -->
-                    </router-link>
+                    </router-link> -->
 
                 </div>
 
-                <router-view/>
+                <router-view class=""  />
+
             </div>
             <!-- Main content -->
 
@@ -62,44 +67,88 @@ import {
 } from '../components'
 
 export default {
-  name: 'SideBarContainer',
-  components: {
-      'nav-bar' : Navbar,
-      'card' : Card,
-      'page-title' : PageTitle,
-      'top-layout' : TopLayout,
-      'page-layout' : PageLayout,
-      'side-navi' : SideNavi
-  },
-  data () {
-    return {
-      msg: 'LectureContainer',
-      stepFlag : '',
-      selector: 'summary',
-      steps : [
-            { title: '강의개요', sub: 'summary' },
-            { title: 'APL기간', sub: 'aplterm' },
-            { title: '시간표', sub: 'timetable' },
-            { title: 'KPI설정', sub: 'kpi' },
-            { title: '수강생', sub: 'students' },
-            { title: '팀빌딩', sub: 'team' },
-            { title: '설문', sub: 'survey' }
-        ]
+    name: 'SideBarContainer',
+    components: {
+        'nav-bar' : Navbar,
+        'card' : Card,
+        'page-title' : PageTitle,
+        'top-layout' : TopLayout,
+        'page-layout' : PageLayout,
+        'side-navi' : SideNavi
+    },
+
+
+
+
+
+    data () {
+        return {
+            msg: 'LectureContainer',
+            testData:0,
+            initial : {}, // 초기데이터
+            stepFlag : '',
+            selector: 'summary',
+            steps : [
+                { title: '강의개요', sub: 'summary' },
+                { title: 'APL기간', sub: 'aplterm' },
+                { title: '시간표', sub: 'timetable' },
+                { title: 'KPI설정', sub: 'kpi' },
+                { title: '수강생', sub: 'students' },
+                { title: '팀빌딩', sub: 'team' },
+                // { title: '설문', sub: 'survey' },
+                { title: '완료', sub: 'complete' }
+            ]
         }
     }, // data()
 
 
-    updated(){
-        // alert(1)
+
+
+
+
+
+
+    created() {
+
+
+        // var ss = window.sessionStorage;
+        // sessionStorage.clear();
+
+        // 초기 스텝설정
+        var path = this.$ro.history.current.path.split('/')
+        this.selector = path[path.length-1]
+
+
+
+        // 저장
+        this.$EventBus.$on('save', this.save)
+        this.$EventBus.$on('goTo', this.goTo)
+
     },
 
+    updated() {
+        var path = this.$ro.history.current.path.split('/')
+        this.selector = path[path.length-1]
+    },
+
+
+
+
     methods: {
+
+        // 상단 페이지스텝 변경
         onChangeStep(step){
             // console.log(step);
-            this.selector = step;
+            if ( confirm('현재 페이지에서 저장하지 않은 데이터는 초기화 됩니다. 페이지를 이동하시겠습니까?') ) {
+                this.selector = step;
+                this.$ro.push({path:'/lectures/new/'+step})
+                return
+            }
         }
 
-    }
+
+
+    } // methods()
 }
 </script>
 
@@ -107,6 +156,7 @@ export default {
 
 
 <style scoped>
+
 
     #sbcWrap{
         padding:0;

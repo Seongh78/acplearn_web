@@ -1,6 +1,6 @@
 <template>
     <div class="container  foot">
-        <p>Manage your account settings and set e-mail preferences.</p>
+        <p>COPYRIGHT ⓒ ACASTAR. ALL RIGHTS RESERVED.</p>
     </div>
 </template>
 

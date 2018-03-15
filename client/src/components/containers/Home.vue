@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="" >
 
         <top-layout bg="true">
             <nav-bar bg="true"/>
@@ -16,7 +16,7 @@
             </page-title>
         </top-layout>
 
-        <div class="ui grid service">
+        <div class="ui grid service ">
             <div class="sixteen wide column centered" style="text-align:center;">
                 <br>
                 <br>
@@ -128,6 +128,8 @@
           <p>1</p>
           <p>2</p>
         </div> -->
+
+        <foot-bar/>
     </div>
 </template>
 
@@ -135,7 +137,7 @@
 
 <!-- Script -->
 <script>
-import { Navbar, Card, PageTitle, TopLayout } from '@/components/components'
+import { Navbar, Card, PageTitle, TopLayout, Footer } from '@/components/components'
 
 
 const page = 'Home';
@@ -146,7 +148,8 @@ export default {
         'nav-bar' : Navbar,
         'card' : Card,
         'page-title' : PageTitle,
-        'top-layout' : TopLayout
+        'top-layout' : TopLayout,
+        "foot-bar":Footer
     },
     created(){
 

@@ -1,12 +1,12 @@
 <template>
 
-    <div class="two wide column ui vertical menu sideNavi">
+    <div class="three wide column ui vertical menu sideNavi">
         <div class="item profile">
             <br>
             <img src="https://semantic-ui.com/images/avatar/large/jenny.jpg" width="45%" class="ui circular image"  alt="" style="margin:0 auto;">
             <h3>David</h3>
             <div class="">
-                <a class="category profileEdit" >내정보수정</a>
+                <!-- <a class="category profileEdit" >내정보수정</a> -->
             </div>
             <br>
         </div>
@@ -31,9 +31,9 @@
             강의현황 <i class="calendar outline icon"></i>
             <!-- <hr style="opacity:0.07;"> -->
             <div class="menu">
-                <router-link class="item" tag="a" :to="{ name:'lectures_processes'}">- 진행강의</router-link>
-                <router-link class="item" tag="a" :to="{ name: 'lectures_wait'}">- 승인대기강의</router-link>
-                <router-link class="item" tag="a" :to="{ name: 'lectures_cwait'}">- 개설대기강의</router-link>
+                <router-link class="item" tag="a" :to="{ path:'/lectures/processes'}">- 진행강의</router-link>
+                <router-link class="item" tag="a" :to="{ path: '/lectures/wait'}">- 승인대기강의</router-link>
+                <router-link class="item" tag="a" :to="{ path: '/lectures/cwait'}">- 개설대기강의</router-link>
             </div>
         </div>
         <router-link class="item" tag="a" :to="{ path : '/templates'}">
@@ -42,12 +42,15 @@
         <router-link class="item" tag="a" :to="{ path : '/companies'}">
             기업관리 <i class="users icon"></i>
         </router-link>
-        <router-link class="item" tag="a" :to="{ path : '/lectures/lectures_processes'}">
-            통계 <i class="bar chart icon"></i></i>
+        <router-link class="item" tag="a" :to="{ path : '/statistics'}">
+            통계 <i class="bar chart icon"></i>
+        </router-link>
+        <router-link class="item" tag="a" :to="{ path : '/settings'}">
+            환경설정 <i class="options icon"></i>
         </router-link>
 
 
-        <div class="ui dropdown item">
+        <!-- <div class="ui dropdown item">
             환경설정
             <i class="options icon"></i>
             <div class="menu">
@@ -55,7 +58,11 @@
                 <a class="item"><i class="globe icon"></i> Choose Language</a>
                 <a class="item"><i class="settings icon"></i> Account Settings</a>
             </div>
-        </div>
+        </div> -->
+
+        <router-link class="item" tag="a" :to="{ path : '/my'}">
+            내 정보 관리 <i class="user circle icon"></i></i>
+        </router-link>
     </div>
 
 
@@ -129,6 +136,8 @@ export default {
         border-radius: 0;
         padding: 0 !important;
         margin: 0 !important;
+        max-width: 230px !important;
+        /*min-width: 170px !important;*/
     }
 
     .profile{
@@ -153,6 +162,8 @@ export default {
     .item,  .item a{
         color:#353535 !important;
         font-size: 0.95em;
+        padding-left:20px !important;
+        padding-right:20px !important;
     }
 
 

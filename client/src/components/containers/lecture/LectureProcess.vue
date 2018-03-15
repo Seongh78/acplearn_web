@@ -4,11 +4,11 @@
 
 
         <h1 class="ui header">강의현황</h1>
-        <hr style="opacity:0.37;">
+        <hr style="opacity:0.3;">
         <div class="ui secondary  menu" style="padding:0;">
             <a href="#" class="item active">진행강의</a>
-            <a href="/lectures/waiting" class="item">승인중강의</a>
-            <a href="/lectures/open" class="item">개설중강의</a>
+            <router-link class="item" tag="a" :to="{ name: 'lectures_wait'}">승인대기강의</router-link>
+            <router-link class="item" tag="a" :to="{ name: 'lectures_cwait'}">개설대기강의</router-link>
 
             <div class="right menu" style="padding:0;">
                 <div class="item" style="padding:0;">
@@ -43,12 +43,12 @@
 
         <table class="ui celled padded table ">
             <colgroup>
-                <col width="6%">
-                <col width="40%">
-                <col width="20%">
-                <col width="6%">
+                <col width="7.5%">
+                <col width="38.5%">
+                <col width="21.5%">
+                <col width="5%">
                 <col width="10%">
-                <col width="8%">
+                <col width="6%">
             </colgroup>
             <thead>
                 <tr>
@@ -57,22 +57,30 @@
                     <th class="center aligned">액션러닝기간</th>
                     <th class="center aligned">회차</th>
                     <th class="center aligned">시간</th>
-                    <th class="center aligned">수강인원</th>
+                    <th class="center aligned">인원</th>
 
                 </tr>
             </thead>
-            <tbody>
-            <tr v-for="lec in lectures">
-                <td>
-                    <h5 class="ui center aligned header" v-bind:class="(lec.status==='진행중'?'green':'')">{{ lec.status }}</h5>
-                    <!-- <h4 class="ui center aligned header" style="color:#a9a9a9;">종료</h4> -->
-                </td>
-                <td class="single line"><a href="#">감성안전을 위한 우리조직 안전리더십 개발</a></td>
-                <td class="center aligned">{{ lec.dateTerm }} </td>
-                <td class="center aligned">{{ lec.count }}회</td>
-                <td class="center aligned">총 24시간(4일)</td>
-                <td class="center aligned">{{ lec.person }}명</td>
-            </tr>
+            <tbody v-if="lectures.length<1">
+                <tr>
+                    <td class="center aligned" colspan="6">
+                        <h4>진행중인 강의가 없습니다.</h4>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody v-else>
+                <tr v-for="lec in lectures">
+                    <td>
+                        <h5 class="ui center aligned header" v-bind:class="(lec.lec_flag==='진행중'?'green': (lec.lec_flag=='승인대기')? 'grey' : 'red' )">{{ lec.lec_flag }}</h5>
+                    </td>
+                    <td class="single line">
+                        <router-link tag="a" :to="{path:'/lectures/detail/'+lec.lec_idx}">{{ lec.lec_title }}</router-link>
+                    </td>
+                    <td class="center aligned">{{ lec.lec_startDate }} ~ {{ lec.lec_endDate }}</td>
+                    <td class="center aligned">{{ lec.lec_sessionCount }}회</td>
+                    <td class="center aligned">-</td>
+                    <td class="center aligned">{{ lec.lec_personnel }}명</td>
+                </tr>
             </tbody>
         </table>
 
@@ -112,76 +120,33 @@ const page = 'LectureProcesses';
 
 export default {
     name: page,
+
+    created() {
+        var ss = window.sessionStorage;
+        sessionStorage.clear();
+
+        this.getLectures()
+    },
+
     data () {
         return {
             msg: page,
-            lectures: [
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "진행중",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "진행중",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "진행중",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                }
-            ]
+            lectures: []
         }
-    }
+    }, // data
+
+    methods: {
+        getLectures() {
+            this.$http.get('/api/lectures?lecType=진행중')
+            .then(resp=>{
+                // console.log(resp.data.data);
+                this.$set(this, 'lectures', resp.data.data)
+            }).catch(err=>{
+                console.log(err);
+                alert('Err')
+            })
+        }// getLectures
+    }// methods
 }
 </script>
 

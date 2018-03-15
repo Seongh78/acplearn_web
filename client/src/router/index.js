@@ -1,7 +1,9 @@
 // 라이브러리
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import axios from 'vue-router'
+import axios from 'axios'
+
+// BACKEND_URL: '"http://localhost:3000"'
 
 
 // 화면 컨테이너
@@ -11,6 +13,7 @@ import MainContainer from '@/components/MainContainer'
 import SideBarContainer from '@/components/containers/SideBarContainer'
 import LectureCreateContainer from '@/components/containers/LectureCreateContainer'
 import Login from '@/components/containers/Login'
+import Join from '@/components/containers/Join'
 
 //  화면 모듈
 import AplectureApplication from '@/components/containers/AplectureApplication'
@@ -20,6 +23,11 @@ import * as Lecture from '@/components/containers/lecture'
 import * as NewLecture from '@/components/containers/newLecture'
 import * as Template from '@/components/containers/template'
 import * as Company from '@/components/containers/company'
+
+// 테스트 컴포넌트
+import Lab from '@/components/containers/labs/Lab'
+import NotFoundPage from '@/components/containers/NotFoundPage'
+import NoContentPage from '@/components/containers/NoContentPage'
 
 
 // 미들웨어
@@ -37,10 +45,17 @@ const router = new VueRouter({
             path: '/',
             component: Home
         },
+
         {// 로그인
             path: '/login',
             name: 'login',
             component: Login
+        },
+
+        {// 가입
+            path: '/join',
+            name: 'join',
+            component: Join
         },
 
 
@@ -57,21 +72,19 @@ const router = new VueRouter({
         {// APL수강신청
             path: '/apl/application',
             component: AplectureApplication,
-            beforeEnter:(to,from,next)=>{
-                console.log(1);
-                alert(1)
-            }
+            meta: { requiresAuth: true,  redirectUrl:'' }
+            // beforeEnter:(to,from,next)=>{
+            //     axios.get('/api/users/session').then(resp=>{
+            //         console.log(resp);
+            //     })
+            //     next()
+            // }
         },
 
 
         {// 공지사항
             path: '/notices',
-            component: Notice,
-            meta: {
-                requiresAuth    : true,
-                adminAuth       : true,
-                residentAuth    : false
-            }
+            component: Notice
         },
 
 
@@ -110,11 +123,16 @@ const router = new VueRouter({
                 {// 진행중 강의 ttttt
                     path: 'processes',
                     name:'lectures_processes',
+                    meta: {
+                        requiresAuth: true,
+                        redirectUrl:'/login',
+                        aplAuth: true
+                    },
                     component : Lecture.LectureProcess
                 },
                 {// 상세보기
                     path : 'detail/:id',
-                    component:Lecture.LectureWait
+                    component:Lecture.LectureDetail
                 },
                 {// 승인대기 강의
                     path: 'wait',
@@ -169,7 +187,7 @@ const router = new VueRouter({
                     component : Company.CompanyList
                 },
                 {// 강의목록
-                    path: 'detail/:cid',
+                    path: 'detail/:id',
                     component : Company.CompanyDetail
                 },
                 {// 강의목록
@@ -189,6 +207,7 @@ const router = new VueRouter({
         {//신규강의 등록
             path: '/lectures/new',
             component: LectureCreateContainer,
+            // props: true,
             children: [
 
                 {// 강의개요
@@ -225,19 +244,105 @@ const router = new VueRouter({
                 }
 
             ]
+        },
+
+
+
+
+        { // 통계
+            path: '/statistics',
+            component: SideBarContainer,
+            children: [
+                {// 강의목록
+                    path: '',
+                    component : NoContentPage
+                }
+            ]
+        },
+
+
+
+
+
+        { // 환경설정
+            path: '/settings',
+            component: SideBarContainer,
+            children: [
+                {// 강의목록
+                    path: '',
+                    component : NoContentPage
+                }
+            ]
+        },
+
+
+        { // 내정보
+            path: '/my',
+            component: SideBarContainer,
+            children: [
+                {// 강의목록
+                    path: '',
+                    component : NoContentPage
+                }
+            ]
+        },
+
+
+
+
+        {
+            path : '/labs',
+            name : 'labs',
+            component: Lab,
+        },
+
+
+
+        {// Not Found Page
+            path: '*',
+            component : NotFoundPage
         }
+
+
     ]
 })//routes
 
 
 
 
-// router.beforeEach((to, from, next)=>{
-//     if (to.meta.requiresAuth) {
-//         // const AuthUser = JSON.parse
-//         const authUsr;
-//     }
-// })
+router.beforeEach((to, from, next)=>{
+    // console.log(to.matched.some(record => record.meta.requiresAuth));
+
+    if (to.meta.requiresAuth) {
+        if (to.meta.aplAuth) {
+            console.log('o?');
+        }
+        axios.get('/api/users/session')
+            .then(resp=>{
+                // console.log(resp);
+                next()
+            })
+            .catch(err=>{
+                // console.log(err);
+                let reUrl = to.meta.redirectUrl;
+                if(reUrl==='' || reUrl===undefined){
+                    alert('로그인 후 이용가능합니다.')
+                    reUrl = from.path
+                }else {
+                    if( !confirm('로그인 후 이용가능합니다. 로그인페이지로 이동하시겠습니까?') ){
+                        reUrl = from.path
+                    }
+                }
+                next({
+                    path: reUrl
+                })
+            })
+
+    }else{
+        next()
+    }
+
+})
 
 
 

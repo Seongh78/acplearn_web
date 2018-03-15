@@ -20,9 +20,9 @@ export default {
         color:#fff;
     }
     .mainBannerImg{
-        background-image: url('../../assets/newbg.png');
+        background-image: url('../../assets/newbg3.jpg');
         background-size: cover;
-        background-position: top center;
+        background-position: center center;
     }
 
 

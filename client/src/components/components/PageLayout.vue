@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="ui grid">
+    <div class="ui grid viewLoadAnimation">
         <div class="nine wide column centered page-layout">
             <slot></slot>
         </div>

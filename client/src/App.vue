@@ -1,7 +1,6 @@
 <template>
     <div id="app " class="">
-        <router-view/>
-
+        <router-view />
     </div>
 </template>
 
@@ -10,6 +9,28 @@
     export default {
         name: 'App',
         // components: { "foot-bar":Footer }
+
+        created(){
+            // this.autoLogin()
+        },
+
+        updated(){
+            // this.autoLogin()
+        },
+
+        methods: {
+            autoLogin(){
+                // 자동로그인
+                this.$http.get('/api/users/session')
+                .then(res=>{
+                    console.log('Auto Login OK');
+                }).catch(e=>{
+                    this.$http.post('/api/users/login', {id:'admin',pw:'123123'})
+                    .then(resp=>{
+                    })
+                })
+            }
+        }// methods
     }
 </script>
 
@@ -21,6 +42,7 @@
         text-align: center;
         color: #2c3e50;
         height: 100%;
+        min-width: 1100px !important;
     }
 
     .container-limit{

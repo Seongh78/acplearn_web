@@ -3,7 +3,7 @@
 <div name="modal" id="modal-template">
     <div class="modal-mask">
         <div class="modal-wrapper" >
-            <div class="modal-container" v-bind:class="w" >
+            <div class="modal-container viewLoadAnimationTop" v-bind:class="w" >
 
                 <div class="modalCon" v-bind:class="h">
                     <div class="modal-header">
@@ -61,22 +61,24 @@ export default {
 
 <!--  -->
 <style lang="css">
-    .modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  display: table;
-  transition: opacity .3s ease;
-}
 
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
+
+    .modal-mask {
+        position: fixed !important;
+        z-index: 9999;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: rgba(0, 0, 0, .5);
+        display: table;
+        transition: opacity .3s ease;
+    }
+
+    .modal-wrapper {
+        display: table-cell;
+        vertical-align: middle;
+    }
 
 
 .w-70{ width: 70%; }

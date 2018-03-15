@@ -5,9 +5,27 @@
 
         <h1 class="ui header">기업관리</h1>
         <hr style="opacity:0.37;">
+
+
+
+        <!-- ======================== 검색바 ============================ -->
         <div class="ui secondary  menu" style="padding:0;">
 
-            <div class="left menu" style="padding:0;">
+            <div class="left menu" >
+                <div class="item ui" style="padding:0;">
+                    <!-- <div class="ui "> -->
+                        <div class="field" style="">
+                          <div class="ui toggle checkbox"  v-bind:class="[ timetableFlag ? 'checked' : '' ]" @click.prevent="flagOn">
+                            <input type="checkbox" name="gift" tabindex="0" class="hidden" style="background:red;" v-model="timetableFlag">
+                            <label>전체기업 보기</label>
+                          </div>
+                        </div>
+                      <!-- </div> -->
+                </div>
+            </div>
+
+
+            <div class="right menu" style="padding:0;">
 
                 <div class="item" style="padding:0;">
                     <div class="ui icon input">
@@ -18,11 +36,7 @@
           </div>
 
         </div>
-
-
-
-
-        <table class="ui celled padded table ">
+        <table class="ui celled padded table viewLoadAnimation">
             <colgroup>
                 <col width="13%">
                 <col width="35%">
@@ -38,12 +52,14 @@
             </thead>
             <tbody>
 
-            <tr v-for="lec in lectures">
-                <td class="center aligned">251-02-220435</td>
-                <td class="single line"><a href="/company/<%=ii%>">(주)Acplean</a></td>
-                <td class="center aligned">의료</td>
-                <td class="center aligned">부산광역시 남구 수영로 88</td>
-                <td class="center aligned">5회 <button id="companyCompleteView" class="button ui mini basic">보기</button></td>
+            <tr v-for="(com, cid) in companies" >
+                <td class="center aligned">{{ com.com_code }}</td>
+                <td class="single line">
+                    <router-link tag="a" :to="{ path: '/companies/detail/'+com.com_code }">{{com.com_name}}</router-link>
+                </td>
+                <td class="center aligned">{{com.com_category}}</td>
+                <td class="center aligned">{{com.com_location}}</td>
+                <td class="center aligned">5회</td>
             </tr>
 
             </tbody>
@@ -66,13 +82,6 @@
                   </a>
                 </div>
 
-                <a href="/lectures/new/summary">
-                <div class="ui  animated button" tabindex="0" style="position:absolute; right:25px; height:40px; background:#4374D9; color: #fff;">
-                  <div class="visible content ">강의개설</div>
-                  <div class="hidden content">
-                    <i class="right arrow icon"></i>
-                  </div>
-                </div></a>
         </div>
 
 
@@ -87,76 +96,53 @@ const page = 'CompanyList';
 
 export default {
     name: page,
+
+    // <!-- ======================== data() ============================ -->
     data () {
         return {
             msg: page,
-            lectures: [
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "진행중",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "진행중",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "진행중",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                },
-                {
-                    title: "감성안전을 위한 우리조직 안전리더십 개발",
-                    status: "종료",
-                    dateTerm: "2017년01월01일 ~ 2017년01월05일",
-                    count: 4,
-                    person: 150
-                }
-            ]
+            timetableFlag:false, // 전체기업보기 플래그
+            companies: [] // 기업목록
         }
-    }
+    },  // data()
+
+
+    // <!-- ======================== created ============================ -->
+    created(){
+        this.getCompanies()
+    }, // created
+
+
+
+    updated(){
+
+    },
+
+
+
+
+
+    // <!-- ======================== methods ============================ -->
+    methods :{
+
+        getCompanies(p=''){
+            var param = p ? '?apply=all' : ''
+            this.$http.get('/api/companies'+param)
+            .then(resp=>{
+                this.$set(this, 'companies', resp.data.companies)
+            })
+            .catch(err=>{
+
+            })
+        },
+
+        flagOn(){
+            this.timetableFlag = !this.timetableFlag
+            this.getCompanies(this.timetableFlag)
+        },
+
+
+    } // methods
 }
 </script>
 
@@ -166,5 +152,11 @@ export default {
 <style scoped>
     a {
         color: #42b983;
+    }
+
+
+    .checkbox label::before,
+    .checkbox label::after{
+        border: 1px solid #c8c8c8 !important;
     }
 </style>

@@ -16,12 +16,13 @@
 
                 <!-- 메인메뉴 -->
 
-                    <router-link tag="li" :to="{ path: '/lectures/processes', params: {} }">APL강의관리 <i class="sign in icon"></i></router-link>&nbsp;
+                    <router-link tag="li" :to="{ path: '/lectures/processes', params: {} }" >APL강의관리 <i class="sign in icon"></i></router-link>&nbsp;
                     <router-link tag="li" :to="{ path: '/service', params: {} }">서비스소개</router-link>
                     <router-link tag="li" :to="{ path: '/notices', params: {} }">공지사항</router-link>
                     <router-link tag="li" :to="{ path: '/apl/application', params: {} }">수강신청</router-link>
                     <router-link tag="li" :to="{ path: '/guide', params: {} }">이용안내</router-link>
-                    <router-link tag="li" :to="{ path: '/login' }">로그인</router-link>
+                    <router-link v-if="!usrStatus"  tag="li" :to="{ path: '/login' }" >로그인</router-link>
+                    <li  @click.prevent="logout" v-else>로그아웃</li>
 
                 <!-- 드롭다운(내정보) -->
                 <!-- <li>
@@ -41,16 +42,50 @@
 
 <script>
 export default {
-  name: 'Nav',
-  props:['bg'],
-  mounted(){
-    // alert(this.bg)
-  },
-  data () {
-    return {
-      msg: 'NavBar'
-    }
-  }
+    name: 'Nav',
+
+    props:['bg'],
+
+    data () {
+        return {
+            msg: 'NavBar',
+            usrStatus:false
+        }
+    }, // data
+
+    created(){
+        this.sessionCheck()
+    },
+
+    updated(){
+        // console.log('Nav updated');
+        this.sessionCheck()
+    },
+
+    mounted(){
+        // alert(this.bg)
+    },
+
+
+
+    methods:{
+        logout(){
+            this.$http.get('/api/users/logout').then(resp=>{
+                // console.log(resp);
+                this.$set(this , 'usrStatus', false)
+                alert('로그아웃되었습니다.')
+                this.$ro.push({path:'/'})
+            })
+        },
+
+        sessionCheck() {
+            this.$http.get('/api/users/session').then(resp=>{
+                this.$set(this, 'usrStatus', true);
+            }).catch(e=>{
+                this.$set(this, 'usrStatus', false);
+            })
+        }// sessionCheck
+    }//methods
 }
 </script>
 
